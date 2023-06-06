@@ -39,25 +39,35 @@ import { useState } from "react";
 // }
 
 export default function Register() {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [password, setPassword] = useState();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     const response = await fetch("/api/hello", {
       method: "POST",
-      body: JSON.stringify({}),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
+      body: JSON.stringify({
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }),
+    });
 
+    const date = await response.json();
+    console.log(date);
+  };
   return (
     <div className="login-form flex flex-col items-center md:flex-row md:h-screen min-w-fit">
       <div className="flex items-center justify-center w-full md:w-1/2">
         <Image
-          src="/login-image.png"
+          src="/login_files/login-image.png"
           alt="Login Image"
           width={800}
           height={600}

@@ -5,22 +5,27 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Readable } from "stream";
 import { json } from "stream/consumers";
 
-type Data = {
-  name: string;
+type User = {
+  first_name?: string;
+  last_name: string;
+  email: string;
+  password: string;
 };
 
 export const config = {
   runtime: "edge",
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  return axios.post("http://localhost:1802/api/users/create-user",req.body, )
-  // return fetch("http://localhost:1802/api/users/create-user", {
-  //   method: req.method,
-  //   body: req.body,
-  //   redirect: "manual",
-  // });
+export default async function handler(request: Request) {
+  const data: User = await request.json();
+  console.log(data);
+
+  return fetch("http://localhost:1802/api/users/create-user", {
+    method: request.method,
+    body: JSON.stringify(data),
+    headers: new Headers({
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    }),
+  });
 }
