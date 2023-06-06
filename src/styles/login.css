@@ -1,0 +1,15 @@
+.login-form {
+  display: flex;
+  justify-content: center;
+}
+
+.login-box {
+  border: 1px;
+  border-style: inset;
+  padding: 45px;
+  color: black;
+}
+
+.agree-policy {
+  margin-left: 45px;
+}
