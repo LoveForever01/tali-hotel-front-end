@@ -34,7 +34,7 @@ export default function Login() {
               className="input-form font-bold"
               type="password"
               size="lg"
-              placeholder=" Password"
+              placeholder="Password"
               pattern="[a-z0-9]{1,15}"
               minLength={4}
               maxLength={20}
