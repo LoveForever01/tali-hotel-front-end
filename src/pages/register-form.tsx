@@ -10,6 +10,7 @@ import { log } from "console";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import register from "./api/register";
 
 // async function submit(
 //   email: string,
@@ -39,20 +40,22 @@ import { useState } from "react";
 // }
 
 export default function Register() {
-  const [email, setEmail] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const response = await fetch("/api/hello", {
+    const response = await fetch("/api/register", {
       method: "POST",
       body: JSON.stringify({
         email: email,
         first_name: firstName,
         last_name: lastName,
         password: password,
+        phone: phone,
       }),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -83,29 +86,55 @@ export default function Register() {
           </div>
           <div className="mb-4 flex flex-col gap-6">
             <Input
+              className="input-form"
+              type="name"
               size="lg"
-              placeholder=" First Name"
+              placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              required
+              minLength={4}
+              maxLength={20}
             />
             <Input
+              className="input-form"
+              type="name"
               size="lg"
-              placeholder=" Last Name"
+              placeholder="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              minLength={2}
+              maxLength={20}
             />
             <Input
+              className="input-form"
+              type="email"
               size="lg"
-              placeholder=" Email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              minLength={4}
+              maxLength={20}
             />
             <Input
+              className="input-form"
+              size="lg"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              minLength={10}
+              maxLength={11}
+            />
+            <Input
+              className="input-form"
               type="password"
               size="lg"
-              placeholder=" Password"
+              placeholder="Password"
               value={password}
+              pattern="[a-z0-9]{1,15}"
               onChange={(e) => setPassword(e.target.value)}
+              minLength={4}
+              maxLength={20}
             />
             <div className="flex items-center items-start mb-4">
               <input

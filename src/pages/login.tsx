@@ -7,7 +7,7 @@ export default function Login() {
     <div className="login-form flex flex-col items-center md:flex-row md:h-screen min-w-fit">
       <div className="flex items-center justify-center w-full md:w-1/2">
         <Image
-          src="/login-image.png"
+          src="/login_files/login-image.png"
           alt="Login Image"
           width={800}
           height={600}
@@ -22,12 +22,22 @@ export default function Login() {
             </p>
           </div>
           <div className="mb-4 flex flex-col gap-6">
-            <Input className="font-bold" size="lg" placeholder=" Email" />
             <Input
-              className="font-bold"
+              className="input-form font-bold"
+              type="phone"
+              size="lg"
+              placeholder="Phone"
+              minLength={10}
+              maxLength={11}
+            />
+            <Input
+              className="input-form font-bold"
               type="password"
               size="lg"
               placeholder=" Password"
+              pattern="[a-z0-9]{1,15}"
+              minLength={4}
+              maxLength={20}
             />
             <div>
               <button
@@ -56,5 +66,4 @@ export default function Login() {
 }
 
 {
-  
 }
