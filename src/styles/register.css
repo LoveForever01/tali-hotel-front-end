@@ -1,0 +1,9 @@
+.error-text {
+    color: red;
+    font-size: 10px;
+
+    /* Các thuộc tính kiểu dáng khác mà bạn muốn áp dụng */
+}
+.error-input {
+    border: 1px solid red;
+}
