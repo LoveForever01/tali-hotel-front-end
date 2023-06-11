@@ -12,33 +12,6 @@ import Link from "next/link";
 import { useState } from "react";
 import register from "./api/register";
 
-// async function submit(
-//   email: string,
-//   firstName: string,
-//   lastName: string,
-//   password: string
-// ) {
-//   try {
-//     const res = await fetch("http://localhost:1802/api/users/create-user", {
-//       method: "POST",
-//       body: JSON.({
-//         email: email,
-//         first_name: firstName,
-//         last_name: lastName,
-//         password: password,
-//       }),
-//     });
-//     return res;
-//   } catch (error) {
-//     throw new Error("Failed to fetch data");
-//   }
-
-//   // The return value is *not* serialized
-//   // You can return Date, Map, Set, etc.
-
-//   // Recommendation: handle errors
-// }
-
 export default function Register() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -92,7 +65,6 @@ export default function Register() {
               placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              required
               minLength={4}
               maxLength={20}
             />

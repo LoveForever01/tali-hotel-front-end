@@ -4,10 +4,10 @@
 }
 
 .login-box {
-  border: 1px;
+  /* border: 1px; */
   border-style: inset;
-  padding: 45px;
-  color: black;
+  padding: 40px;
+  /* color: black; */
 }
 
 .agree-policy {

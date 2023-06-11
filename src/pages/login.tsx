@@ -1,8 +1,30 @@
 import { Input } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const response = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }),
+    });
+
+    const date = await response.json();
+    console.log(date);
+  };
+
   return (
     <div className="login-form flex flex-col items-center md:flex-row md:h-screen min-w-fit">
       <div className="flex items-center justify-center w-full md:w-1/2">
@@ -29,6 +51,7 @@ export default function Login() {
               placeholder="Phone"
               minLength={10}
               maxLength={11}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <Input
               className="input-form font-bold"
@@ -38,10 +61,12 @@ export default function Login() {
               pattern="[a-z0-9]{1,15}"
               minLength={4}
               maxLength={20}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="w-full px-4 py-3 font-bold text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700"
               >
                 Sign In
