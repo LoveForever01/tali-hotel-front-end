@@ -1,11 +1,24 @@
 import { Input } from "@material-tailwind/react";
+import { HttpStatusCode } from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { getCookies, setCookie, deleteCookie } from "cookies-next";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [toDo, setTodo] = useState(0);
+  const router = useRouter();
+  const [jwtToken, setJwtToken] = useState("");
+
+  const handleRegister = async () => {
+    // Sau khi đăng kí thành công, chuyển hướng đến trang login
+    router.push("/");
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -21,8 +34,21 @@ export default function Login() {
       }),
     });
 
-    const date = await response.json();
-    console.log(date);
+    setTodo(response.status);
+    const json = await response.json();
+    const data = json.data;
+    const token = data.jwt_token;
+    setJwtToken(token);
+    // Xử lý đăng kí thành công
+    if (toDo == HttpStatusCode.Ok) {
+      toast.success("Đăng nhập thành công!");
+      setCookie("jwt_token", token);
+      setTimeout(() => {
+        handleRegister();
+      }, 100);
+    } else {
+      toast.warning("Đăng nhập thất bại!");
+    }
   };
 
   return (
@@ -78,7 +104,7 @@ export default function Login() {
               </p>
               <Link
                 className="ext-sm text-blue-900 dark:text-blue"
-                href="/register-form"
+                href="/register"
               >
                 &nbsp; Sign up
               </Link>

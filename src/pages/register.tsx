@@ -6,11 +6,15 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { log } from "console";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import register from "./api/register";
+import { HttpStatusCode } from "axios";
+import Success from "./top-up/succes";
+import Fail from "./top-up/fail";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -18,6 +22,14 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [toDo, setTodo] = useState(0);
+  const router = useRouter();
+
+  const handleRegister = async () => {
+    // Sau khi đăng kí thành công, chuyển hướng đến trang login
+    router.push("/login");
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -29,16 +41,28 @@ export default function Register() {
         last_name: lastName,
         password: password,
         phone: phone,
+        role_id: 1,
       }),
       headers: new Headers({
         "Content-Type": "application/json",
         Accept: "application/json",
       }),
     });
+    setTodo(response.status);
 
-    const date = await response.json();
-    console.log(date);
+    // Xử lý đăng kí thành công
+    if (toDo == HttpStatusCode.Ok) {
+      toast.success("Đăng kí thành công!");
+      setTimeout(() => {
+        handleRegister();
+      }, 2000);
+    } else {
+      toast.warning("Đăng kí thất bại!");
+    }
+
+    return response.status;
   };
+
   return (
     <div className="login-form flex flex-col items-center md:flex-row md:h-screen min-w-fit">
       <div className="flex items-center justify-center w-full md:w-1/2">
@@ -134,6 +158,7 @@ export default function Register() {
               >
                 Register
               </button>
+              {/* {toDo == HttpStatusCode.Ok && handleRegister } */}
             </div>
             <div className="inline-flex">
               <p className="ext-sm text-gray-900 dark:text-grey">

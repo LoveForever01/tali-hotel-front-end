@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   MobileNav,
@@ -6,59 +6,152 @@ import {
   Button,
   IconButton,
   Card,
+  Avatar,
+  Collapse,
 } from "@material-tailwind/react";
+import Link from "next/link";
+import { Grid } from "@nextui-org/react";
+import { cookies } from "next/dist/client/components/headers";
+import { getCookie } from "cookies-next";
+import PersonalAvatar from "./avatar";
 
 export default function NavbarHeader() {
   const [openNav, setOpenNav] = React.useState(false);
+  const [dropDown, setDropDown] = useState(0);
 
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
+  // const handleClickAvatar = async (e: number) => {
+  //   if (dropDown == 1) {
+  //     <>
+  //       <div
+  //         id="dropdownInformation"
+  //         className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+  //       >
+  //         <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+  //           <div>Bonnie Green</div>
+  //           <div className="font-medium truncate">name@flowbite.com</div>
+  //         </div>
+  //         <ul
+  //           className="py-2 text-sm text-gray-700 dark:text-gray-200"
+  //           aria-labelledby="dropdownInformationButton"
+  //         >
+  //           <li>
+  //             <a
+  //               href="#"
+  //               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+  //             >
+  //               Dashboard
+  //             </a>
+  //           </li>
+  //           <li>
+  //             <a
+  //               href="#"
+  //               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+  //             >
+  //               Settings
+  //             </a>
+  //           </li>
+  //           <li>
+  //             <a
+  //               href="#"
+  //               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+  //             >
+  //               Earnings
+  //             </a>
+  //           </li>
+  //         </ul>
+  //         <div className="py-2">
+  //           <a
+  //             href="#"
+  //             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+  //           >
+  //             Sign out
+  //           </a>
+  //         </div>
+  //       </div>
+  //       ;
+  //     </>;
+  //   }
+  // };
+
+  const handleAvatar =
+    getCookie("jwt_token") == null ? (
+      <div>
+        <button
+          type="button"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          <Link href="/login">Sign in</Link>
+        </button>
+        <button
+          type="button"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          <Link href="/register">Sign up</Link>
+        </button>
+      </div>
+    ) : (
+      <div>
+        <img
+          className="w-10 h-10 rounded-full"
+          src="/tali-hotel-logo.png"
+          alt="Rounded avatar"
+          // onClick={() => handleClickAvatar(1)
+          // }
+        />
+      </div>
     );
-  }, []);
+
+  console.log(getCookie("jwt_token"));
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
-        variant="small"
+        variant="lead"
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="#" className="flex items-center hover:text-orange-500">
           Pages
         </a>
       </Typography>
       <Typography
         as="li"
-        variant="small"
+        variant="lead"
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="#" className="flex items-center hover:text-orange-500">
           Account
         </a>
       </Typography>
       <Typography
         as="li"
-        variant="small"
+        variant="lead"
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="#" className="flex items-center hover:text-orange-500">
           Blocks
         </a>
       </Typography>
       <Typography
         as="li"
-        variant="small"
+        variant="lead"
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="#" className="flex items-center hover:text-orange-500">
           Docs
         </a>
+      </Typography>
+      <Typography
+        as="li"
+        variant="h6"
+        color="blue-gray"
+        className="p-1 font-semibold ${handleAvatar}"
+      >
+        <div>{handleAvatar}</div>
       </Typography>
     </ul>
   );
@@ -74,9 +167,9 @@ export default function NavbarHeader() {
           >
             <div className="transform-gpu">
               <img
-                className="nav-logo-brand w-full object-center "
+                className="nav-logo-brand w-full object-center"
                 src="/tali-hotel-logo-brand.png"
-                alt="nature image"
+                alt="logo image"
               />
             </div>
           </Typography>
@@ -129,12 +222,12 @@ export default function NavbarHeader() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
           <Button variant="gradient" size="sm" fullWidth className="mb-2">
             <span>Buy Now</span>
           </Button>
-        </MobileNav>
+        </Collapse>
       </Navbar>
       <div className="mx-auto max-w-screen-md py-12">
         <Card className="mb-12 overflow-hidden">

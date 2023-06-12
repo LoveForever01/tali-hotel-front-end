@@ -11,17 +11,18 @@ type User = {
   email: string;
   password: string;
   phone: string;
+  role_id: number;
 };
 
 export const config = {
   runtime: "edge",
 };
 
-export default async function handler(request: Request) {
+export default async function handler(request: Request, response: Response) {
   const data: User = await request.json();
   console.log(data);
 
-  return fetch("http://localhost:1802/api/users/create-user", {
+  return fetch("http://localhost:1802/api/auth/signup", {
     method: request.method,
     body: JSON.stringify(data),
     headers: new Headers({
