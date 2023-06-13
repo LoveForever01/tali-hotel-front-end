@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Navbar,
   MobileNav,
@@ -14,67 +14,85 @@ import { Grid } from "@nextui-org/react";
 import { cookies } from "next/dist/client/components/headers";
 import { getCookie } from "cookies-next";
 import PersonalAvatar from "./avatar";
-
 export default function NavbarHeader() {
   const [openNav, setOpenNav] = React.useState(false);
   const [dropDown, setDropDown] = useState(0);
+  const [isHaveToken, setIsHaveToken] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
+  // const dropdown = useRef(null);
 
-  // const handleClickAvatar = async (e: number) => {
-  //   if (dropDown == 1) {
-  //     <>
-  //       <div
-  //         id="dropdownInformation"
-  //         className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-  //       >
-  //         <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-  //           <div>Bonnie Green</div>
-  //           <div className="font-medium truncate">name@flowbite.com</div>
-  //         </div>
-  //         <ul
-  //           className="py-2 text-sm text-gray-700 dark:text-gray-200"
-  //           aria-labelledby="dropdownInformationButton"
-  //         >
-  //           <li>
-  //             <a
-  //               href="#"
-  //               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-  //             >
-  //               Dashboard
-  //             </a>
-  //           </li>
-  //           <li>
-  //             <a
-  //               href="#"
-  //               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-  //             >
-  //               Settings
-  //             </a>
-  //           </li>
-  //           <li>
-  //             <a
-  //               href="#"
-  //               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-  //             >
-  //               Earnings
-  //             </a>
-  //           </li>
-  //         </ul>
-  //         <div className="py-2">
-  //           <a
-  //             href="#"
-  //             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-  //           >
-  //             Sign out
-  //           </a>
-  //         </div>
-  //       </div>
-  //       ;
-  //     </>;
+  // useEffect(() => {
+  //   // only add the event listener when the dropdown is opened
+  //   if (!showDropdown) return;
+  //   function handleClick(event) {
+  //     if (dropdown.current && !dropdown.current.contains(event.target)) {
+  //       setShowDropdown(false);
+  //     }
   //   }
-  // };
+  //   window.addEventListener("click", handleClick);
+  //   // clean up
+  //   return () => window.removeEventListener("click", handleClick);
+  // }, [showDropdown]);
+
+  const handleClickAvatar = () => {
+    if (dropDown == 1) {
+      <>
+        <div
+          id="dropdownInformation"
+          className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+        >
+          <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+            <div>Bonnie Green</div>
+            <div className="font-medium truncate">name@flowbite.com</div>
+          </div>
+          <ul
+            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="dropdownInformationButton"
+          >
+            <li>
+              <a
+                href="#"
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Settings
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Earnings
+              </a>
+            </li>
+          </ul>
+          <div className="py-2">
+            <a
+              href="#"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            >
+              Sign out
+            </a>
+          </div>
+        </div>
+        ;
+      </>;
+    }
+  };
+  useEffect(() => {
+    getCookie("jwt_token") != null ? setIsHaveToken(1) : setIsHaveToken(0);
+  }, []);
 
   const handleAvatar =
-    getCookie("jwt_token") == null ? (
+    isHaveToken == 0 ? (
       <div>
         <button
           type="button"
@@ -90,18 +108,21 @@ export default function NavbarHeader() {
         </button>
       </div>
     ) : (
-      <div>
-        <img
-          className="w-10 h-10 rounded-full"
-          src="/tali-hotel-logo.png"
-          alt="Rounded avatar"
-          // onClick={() => handleClickAvatar(1)
-          // }
-        />
-      </div>
+      <>
+        <button className="w-10 h-10 rounded-full hover:bg-blue-800 focus:ring-4">
+          <img
+            className="w-10 h-10 rounded-full"
+            src="/tali-hotel-logo.png"
+            alt="avatar"
+            onClick={() => setDropDown(1)}
+            onChange={handleClickAvatar}
+          />
+        </button>
+        {/* <button className="w-10 h-10 rounded-full hover:bg-blue-800 focus:ring-4">
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>
+        </button> */}
+      </>
     );
-
-  console.log(getCookie("jwt_token"));
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">

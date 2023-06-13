@@ -10,7 +10,6 @@ import { getCookies, setCookie, deleteCookie } from "cookies-next";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [toDo, setTodo] = useState(0);
   const router = useRouter();
   const [jwtToken, setJwtToken] = useState("");
 
@@ -33,21 +32,23 @@ export default function Login() {
         Accept: "application/json",
       }),
     });
-
-    setTodo(response.status);
     const json = await response.json();
-    const data = json.data;
-    const token = data.jwt_token;
-    setJwtToken(token);
-    // Xử lý đăng kí thành công
-    if (toDo == HttpStatusCode.Ok) {
+    console.log(json.status);
+
+    if (json.status == HttpStatusCode.Ok) {
       toast.success("Đăng nhập thành công!");
-      setCookie("jwt_token", token);
+
       setTimeout(() => {
         handleRegister();
       }, 100);
+
+      const data = json.data;
+      const token = data.jwt_token;
+      setJwtToken(token);
+      setCookie("jwt_token", token);
     } else {
-      toast.warning("Đăng nhập thất bại!");
+      toast.warning("Sai số điện thoại hoặc mật khẩu!");
+      deleteCookie("jwt_token");
     }
   };
 

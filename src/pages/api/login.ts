@@ -14,11 +14,10 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function handler(request: Request) {
+export default async function handler(request: Request, response: Response) {
   const data: User = await request.json();
-  console.log(data);
 
-  return fetch("http://localhost:1802/api/auth/signin", {
+  response = await fetch("http://localhost:1802/api/auth/signin", {
     method: request.method,
     body: JSON.stringify(data),
     headers: new Headers({
@@ -26,4 +25,5 @@ export default async function handler(request: Request) {
       Accept: "application/json",
     }),
   });
+  return response;
 }
