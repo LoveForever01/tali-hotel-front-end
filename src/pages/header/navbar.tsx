@@ -10,10 +10,15 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import { Grid } from "@nextui-org/react";
-import { cookies } from "next/dist/client/components/headers";
 import { getCookie } from "cookies-next";
-import PersonalAvatar from "./avatar";
+import {
+  faSearch,
+  faAmbulance,
+  faAnchor,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 export default function NavbarHeader() {
   const [openNav, setOpenNav] = React.useState(false);
   const [dropDown, setDropDown] = useState(0);
@@ -109,7 +114,7 @@ export default function NavbarHeader() {
       </div>
     ) : (
       <>
-        <button className="w-10 h-10 rounded-full hover:bg-blue-800 focus:ring-4">
+        <button className="w-10 h-10 rounded-full hover:bg-blue-800 focus:ring-4 mx-5">
           <img
             className="w-10 h-10 rounded-full"
             src="/tali-hotel-logo.png"
@@ -118,9 +123,9 @@ export default function NavbarHeader() {
             onChange={handleClickAvatar}
           />
         </button>
-        {/* <button className="w-10 h-10 rounded-full hover:bg-blue-800 focus:ring-4">
-          <i className="fa-solid fa-arrow-right-from-bracket"></i>
-        </button> */}
+        <p className="hover:text-orange-500">
+          <FontAwesomeIcon icon={faArrowRightFromBracket} />
+        </p>
       </>
     );
 
@@ -133,7 +138,7 @@ export default function NavbarHeader() {
         className="p-1 font-normal"
       >
         <a href="#" className="flex items-center hover:text-orange-500">
-          Pages
+          Home
         </a>
       </Typography>
       <Typography
@@ -143,7 +148,7 @@ export default function NavbarHeader() {
         className="p-1 font-normal"
       >
         <a href="#" className="flex items-center hover:text-orange-500">
-          Account
+          Room
         </a>
       </Typography>
       <Typography
@@ -172,14 +177,14 @@ export default function NavbarHeader() {
         color="blue-gray"
         className="p-1 font-semibold ${handleAvatar}"
       >
-        <div>{handleAvatar}</div>
+        <div className="flex items-center">{handleAvatar}</div>
       </Typography>
     </ul>
   );
 
   return (
     <>
-      <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4 text-9x">
+      <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4 text-9x opacity-100">
         <div className="flex items-center justify-between text-blue-gray-900 text-20x">
           <Typography
             as="a"
